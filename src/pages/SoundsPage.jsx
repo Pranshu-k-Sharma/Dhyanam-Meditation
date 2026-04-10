@@ -143,11 +143,6 @@ export default function SoundsPage({ onPlaySound, activeSoundKey = "" }) {
           Sounds
         </motion.h1>
 
-        <p className="aura-copy mt-4 max-w-3xl text-base leading-relaxed md:text-lg">
-          Browse your meditation sound library. Click any track to launch the floating orb player
-          and keep listening across the whole website.
-        </p>
-
         <div className="mt-6 flex flex-wrap gap-2">
           <span className="rounded-full border border-aura-gold/30 bg-aura-card/85 px-3 py-1 text-xs uppercase tracking-[0.12em] text-aura-textSoft">
             {soundsLibrary.length} Tracks
