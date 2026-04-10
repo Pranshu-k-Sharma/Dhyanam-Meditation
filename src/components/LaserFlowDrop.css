@@ -1,0 +1,43 @@
+.laser-drop-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.laser-drop-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(248, 242, 231, 0.34), transparent 55%),
+    linear-gradient(180deg, rgba(248, 242, 231, 0.16) 0%, rgba(248, 242, 231, 0.02) 65%, transparent 100%);
+}
+
+.laser-drop-line {
+  position: absolute;
+  top: -130px;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(248, 242, 231, 0),
+    rgba(248, 242, 231, 0.75) 36%,
+    rgba(248, 242, 231, 0.18) 74%,
+    rgba(248, 242, 231, 0)
+  );
+  box-shadow:
+    0 0 8px rgba(248, 242, 231, 0.34),
+    0 0 20px rgba(248, 242, 231, 0.2);
+  animation-name: laser-drop-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes laser-drop-fall {
+  0% {
+    transform: translateY(-120%);
+  }
+  100% {
+    transform: translateY(270%);
+  }
+}

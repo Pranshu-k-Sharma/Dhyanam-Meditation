@@ -1,0 +1,66 @@
+.magic-rings-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+  mix-blend-mode: screen;
+}
+
+.magic-rings-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.magic-ring-group {
+  transform-origin: 300px 200px;
+  animation-name: magic-ring-wave;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.magic-ring-group circle {
+  stroke-dashoffset: 0;
+  animation-name: magic-ring-ripple;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes magic-ring-ripple {
+  0% {
+    transform: scale(0.86);
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+  14% {
+    opacity: 0.88;
+  }
+  48% {
+    transform: scale(1.13);
+    opacity: 0.62;
+    stroke-dashoffset: -130;
+  }
+  100% {
+    transform: scale(1.38);
+    opacity: 0;
+    stroke-dashoffset: -320;
+  }
+}
+
+@keyframes magic-ring-wave {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) scale(1.035);
+  }
+}
+
+@keyframes magic-ring-wave-old {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -260;
+  }
+}

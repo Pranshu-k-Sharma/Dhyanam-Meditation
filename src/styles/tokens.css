@@ -1,0 +1,28 @@
+:root {
+  --bg-primary: #f8f2e7;
+  --bg-secondary: #d1bfa3;
+  --bg-deep: #f8f2e7;
+  --bg-panel: rgba(248, 242, 231, 0.9);
+  --bg-panel-soft: rgba(209, 191, 163, 0.72);
+  --card-bg: #d1bfa3;
+  --gold-primary: #1c1208;
+  --gold-secondary: #0f0a05;
+  --text-primary: #1c1208;
+  --text-secondary: rgba(28, 18, 8, 0.72);
+  --focus-ring: rgba(28, 18, 8, 0.72);
+  --glass-border: rgba(28, 18, 8, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.45);
+  --glass-shadow: rgba(28, 18, 8, 0.12);
+  --grid-cyan-strong: rgba(28, 18, 8, 0.08);
+  --grid-cyan-soft: rgba(28, 18, 8, 0.04);
+  --grain: rgba(28, 18, 8, 0.08);
+  --pointer-glow: rgba(28, 18, 8, 0.16);
+  --section-blend-strong: rgba(248, 242, 231, 0.96);
+  --section-blend-soft: rgba(248, 242, 231, 0);
+  --scroll-progress-start: rgba(28, 18, 8, 0.9);
+  --scroll-progress-mid: rgba(15, 10, 5, 0.86);
+  --scroll-progress-end: rgba(28, 18, 8, 0.84);
+  --star: rgba(28, 18, 8, 0.35);
+  --active-pill-glow: rgba(28, 18, 8, 0.2);
+  --cta-glow: rgba(28, 18, 8, 0.16);
+}
