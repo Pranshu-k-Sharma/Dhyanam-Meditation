@@ -83,7 +83,7 @@ function formatJoinDate(value) {
   });
 }
 
-export default function AccountAccess() {
+export default function AccountAccess({ requireAuth = true }) {
   const [activeUser, setActiveUser] = useState(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(true);
   const [authMode, setAuthMode] = useState("login");
@@ -101,8 +101,8 @@ export default function AccountAccess() {
       return;
     }
 
-    setAuthDialogOpen(true);
-  }, []);
+    setAuthDialogOpen(requireAuth);
+  }, [requireAuth]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -259,7 +259,7 @@ export default function AccountAccess() {
       saveActiveUser(null);
       setMenuOpen(false);
       setAuthMode("login");
-      setAuthDialogOpen(true);
+      setAuthDialogOpen(requireAuth);
       setInfoMessage("You are now logged out.");
       return;
     }

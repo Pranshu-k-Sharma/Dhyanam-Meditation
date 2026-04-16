@@ -13,6 +13,20 @@ const tempoWeight = {
   Steady: 4,
 };
 
+function readFavoritesFromStorage() {
+  try {
+    const rawFavorites = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
+    if (!rawFavorites) {
+      return new Set();
+    }
+
+    const parsed = JSON.parse(rawFavorites);
+    return Array.isArray(parsed) ? new Set(parsed) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
 export default function SoundsPage({ onPlaySound, activeSoundKey = "" }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
@@ -21,23 +35,26 @@ export default function SoundsPage({ onPlaySound, activeSoundKey = "" }) {
   const [favorites, setFavorites] = useState(new Set());
 
   useEffect(() => {
-    try {
-      const rawFavorites = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
-      if (!rawFavorites) {
-        return;
-      }
-      const parsed = JSON.parse(rawFavorites);
-      if (Array.isArray(parsed)) {
-        setFavorites(new Set(parsed));
-      }
-    } catch {
-      setFavorites(new Set());
-    }
+    setFavorites(readFavoritesFromStorage());
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify([...favorites]));
   }, [favorites]);
+
+  useEffect(() => {
+    const syncFavorites = (event) => {
+      if (event.key !== FAVORITES_STORAGE_KEY) {
+        return;
+      }
+
+      setFavorites(readFavoritesFromStorage());
+    };
+
+    window.addEventListener("storage", syncFavorites);
+
+    return () => window.removeEventListener("storage", syncFavorites);
+  }, []);
 
   const filteredSounds = useMemo(() => {
     const normalized = query.trim().toLowerCase();

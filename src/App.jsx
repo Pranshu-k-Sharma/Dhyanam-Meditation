@@ -5,17 +5,20 @@ import Hero from "./components/Hero";
 import BorderGlow from "./components/BorderGlow";
 import AudioPlayer from "./components/AudioPlayer";
 import Orb from "./components/Orb";
+import GroupCallDock from "./components/GroupCallDock";
 import AccountAccess from "./components/AccountAccess";
 import InformationFooter from "./components/InformationFooter";
 import MantrasPage from "./pages/MantrasPage";
 import BreathingExercisePage from "./pages/BreathingExercisePage";
 import SoundsPage from "./pages/SoundsPage";
+import GroupMeditationSessionPage from "./pages/GroupMeditationSessionPage";
 import StressReliefPage from "./pages/StressReliefPage";
 import FocusPage from "./pages/FocusPage";
 import SleepPage from "./pages/SleepPage";
 import SpiritualPage from "./pages/SpiritualPage";
 import { soundsLibrary } from "./data/sounds";
 import { playBellChime } from "./lib/bell";
+import { GROUP_SESSION_EVENT, readGroupSession } from "./lib/groupSession";
 
 const Breathing = lazy(() => import("./components/Breathing"));
 const ReflectionSection = lazy(() => import("./components/ReflectionSection"));
@@ -31,6 +34,7 @@ const sectionNavItems = [
 const pageNavItems = [
   { to: "/mantras", label: "Mantras" },
   { to: "/sounds", label: "Sounds" },
+  { to: "/group-session", label: "Circle" },
 ];
 
 const ACTIVE_USER_STORAGE_KEY = "innerpeace.activeUser";
@@ -55,6 +59,7 @@ function App() {
   const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
   const isBreathingExercisePage = location.pathname === "/breathing-exercise";
+  const isGroupSessionPage = location.pathname === "/group-session";
   const [activeSection, setActiveSection] = useState("home");
   const [showIntro, setShowIntro] = useState(true);
   const [globalPlayerVisible, setGlobalPlayerVisible] = useState(false);
@@ -62,6 +67,7 @@ function App() {
   const [globalSoundKey, setGlobalSoundKey] = useState(soundsLibrary[0]?.key ?? "");
   const [globalAutoPlayToken, setGlobalAutoPlayToken] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(() => hasActiveUserSession());
+  const [groupSession, setGroupSession] = useState(() => readGroupSession());
 
   const globalActiveSound = useMemo(() => {
     return soundsLibrary.find((item) => item.key === globalSoundKey) ?? soundsLibrary[0] ?? null;
@@ -137,9 +143,11 @@ function App() {
 
     const element = document.getElementById(sectionIdFromHash);
     if (element) {
-      window.setTimeout(() => {
+      const timeoutId = window.setTimeout(() => {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 30);
+
+      return () => window.clearTimeout(timeoutId);
     }
   }, [isHomePage, location.hash]);
 
@@ -262,6 +270,27 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const syncGroupSession = () => setGroupSession(readGroupSession());
+
+    const onGroupSessionChanged = (event) => {
+      if (event?.detail) {
+        setGroupSession(event.detail);
+        return;
+      }
+
+      syncGroupSession();
+    };
+
+    window.addEventListener(GROUP_SESSION_EVENT, onGroupSessionChanged);
+    window.addEventListener("storage", syncGroupSession);
+
+    return () => {
+      window.removeEventListener(GROUP_SESSION_EVENT, onGroupSessionChanged);
+      window.removeEventListener("storage", syncGroupSession);
+    };
+  }, []);
+
 
 
   const renderCurrentPage = () => {
@@ -275,6 +304,10 @@ function App() {
 
     if (location.pathname === "/breathing-exercise") {
       return <BreathingExercisePage />;
+    }
+
+    if (location.pathname === "/group-session") {
+      return <GroupMeditationSessionPage />;
     }
 
     if (location.pathname === "/stress-relief") {
@@ -409,10 +442,12 @@ function App() {
         </>
       )}
 
-      <AccountAccess />
+      <AccountAccess requireAuth={!isGroupSessionPage} />
+
+      <GroupCallDock session={groupSession} onSessionChange={setGroupSession} />
 
       <div key={`${location.pathname}${location.hash}`}>
-        {isAuthenticated ? (
+        {(isAuthenticated || isGroupSessionPage) ? (
           renderCurrentPage()
         ) : (
           <section className="relative z-10 flex min-h-screen items-center justify-center px-6 text-center">

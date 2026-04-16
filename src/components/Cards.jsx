@@ -11,6 +11,12 @@ const categories = [
     path: "/stress-relief",
   },
   {
+    title: "Group Circle",
+    description: "Join a shared room for live meditation, breath cues, and quiet presence.",
+    glow: "from-aura-bg/78 to-aura-bgSoft/42",
+    path: "/group-session",
+  },
+  {
     title: "Focus",
     description: "Train attention with single-point concentration sessions.",
     glow: "from-aura-bg/78 to-aura-bgSoft/42",
